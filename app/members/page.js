@@ -2,10 +2,11 @@ import { getMembers, getPayments, getGlobalMonth } from '@/lib/actions';
 import AddMemberForm from '@/app/components/AddMemberForm';
 import AddPaymentForm from '@/app/components/AddPaymentForm';
 import DeletePaymentButton from '@/app/components/DeletePaymentButton';
+import DeleteMemberButton from '@/app/components/DeleteMemberButton';
 
 export default async function MembersPage() {
   const { monthPrefix } = await getGlobalMonth();
-  const members = await getMembers();
+  const members = await getMembers(monthPrefix);
   const payments = await getPayments(monthPrefix);
 
   return (
@@ -36,6 +37,7 @@ export default async function MembersPage() {
                 <th>Member</th>
                 <th>Amount</th>
                 <th>Months Covered</th>
+                <th>Type</th>
                 <th>Mode</th>
                 <th>Actions</th>
               </tr>
@@ -47,6 +49,7 @@ export default async function MembersPage() {
                   <td>{p.member_name}</td>
                   <td>₹{p.amount}</td>
                   <td>{p.months_covered}</td>
+                  <td>{p.payment_type === 'ADMISSION' ? 'Admission Fee' : 'Monthly Fee'}</td>
                   <td>{p.mode}</td>
                   <td><DeletePaymentButton id={p.id} /></td>
                 </tr>
@@ -69,7 +72,8 @@ export default async function MembersPage() {
               <tr>
                 <th>Name</th>
                 <th>Join Date</th>
-                <th>Status</th>
+                <th>Status (This Month)</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -77,12 +81,17 @@ export default async function MembersPage() {
                 <tr key={m.id}>
                   <td>{m.name}</td>
                   <td>{m.join_date}</td>
-                  <td><span style={{ color: 'var(--success)' }}>{m.status}</span></td>
+                  <td>
+                    <span style={{ color: m.dynamic_status === 'ACTIVE' ? 'var(--success)' : 'var(--danger)' }}>
+                      {m.dynamic_status}
+                    </span>
+                  </td>
+                  <td><DeleteMemberButton id={m.id} /></td>
                 </tr>
               ))}
               {members.length === 0 && (
                 <tr>
-                  <td colSpan="3" className="text-center text-muted">No members found.</td>
+                  <td colSpan="4" className="text-center text-muted">No members found.</td>
                 </tr>
               )}
             </tbody>

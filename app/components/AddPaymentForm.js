@@ -12,10 +12,11 @@ export default function AddPaymentForm({ members, monthPrefix }) {
   const [date, setDate] = useState(defaultDate);
   const [monthsCovered, setMonthsCovered] = useState(1);
   const [mode, setMode] = useState('CASH');
+  const [paymentType, setPaymentType] = useState('FEE');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addPayment({ memberId, amount: parseFloat(amount), date, monthsCovered: parseInt(monthsCovered), mode });
+    await addPayment({ memberId, amount: parseFloat(amount), date, monthsCovered: parseInt(monthsCovered), mode, paymentType });
     setMemberId('');
     setAmount('');
     setMonthsCovered(1);
@@ -57,10 +58,25 @@ export default function AddPaymentForm({ members, monthPrefix }) {
             value={monthsCovered} 
             onChange={(e) => setMonthsCovered(e.target.value)} 
             required 
+            disabled={paymentType === 'ADMISSION'}
           />
         </div>
       </div>
       <div className="grid-2">
+        <div className="form-group">
+          <label className="form-label">Payment Type</label>
+          <select 
+            className="form-control" 
+            value={paymentType} 
+            onChange={(e) => {
+              setPaymentType(e.target.value);
+              if (e.target.value === 'ADMISSION') setMonthsCovered(1);
+            }}
+          >
+            <option value="FEE">Monthly Fee</option>
+            <option value="ADMISSION">New Admission</option>
+          </select>
+        </div>
         <div className="form-group">
           <label className="form-label">Date</label>
           <input 

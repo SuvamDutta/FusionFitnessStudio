@@ -75,9 +75,8 @@ export default async function Dashboard() {
                 <tr>
                   <th>Member Name</th>
                   <th>Payment Date</th>
-                  <th>Total Paid</th>
-                  <th>Coverage</th>
-                  <th>Amount For {currentMonthName}</th>
+                  <th>Type</th>
+                  <th>Amount</th>
                   <th>Mode</th>
                 </tr>
               </thead>
@@ -86,8 +85,7 @@ export default async function Dashboard() {
                   <tr key={idx}>
                     <td><strong>{vp.member_name}</strong></td>
                     <td>{vp.date}</td>
-                    <td>₹{vp.amount}</td>
-                    <td>{vp.months_covered} Month(s)</td>
+                    <td>{vp.payment_type === 'ADMISSION' ? 'Admission Fee' : 'Monthly Fee'}</td>
                     <td style={{ color: 'var(--success)' }}>+₹{vp.amount.toFixed(2)}</td>
                     <td>{vp.mode}</td>
                   </tr>

@@ -45,25 +45,52 @@ export default function DownloadReportButton({ report, monthName, year }) {
 
     let currentY = doc.lastAutoTable.finalY + 15;
 
-    // Active Members Table
+    // Monthly Fees Table
     doc.setFontSize(12);
-    doc.text('Active Member Payments (For this month)', 14, currentY);
+    doc.text('Monthly Fee Payments (For this month)', 14, currentY);
     
-    const membersData = report.validPayments.map(p => [
+    const feePayments = report.validPayments.filter(p => p.payment_type !== 'ADMISSION');
+    const feeData = feePayments.map(p => [
       p.member_name,
       p.date,
       `Rs. ${p.amount}`,
       `${p.months_covered} Months`,
-      p.mode,
-      `Rs. ${p.amount.toFixed(2)}`
+      p.mode
     ]);
 
     autoTable(doc, {
       startY: currentY + 5,
-      head: [['Member Name', 'Payment Date', 'Total Paid', 'Coverage', 'Mode', `Amount for ${monthName}`]],
-      body: membersData.length > 0 ? membersData : [['No data', '', '', '', '', '']],
+      head: [['Member Name', 'Payment Date', 'Amount', 'Coverage', 'Mode']],
+      body: feeData.length > 0 ? feeData : [['No data', '', '', '', '']],
       theme: 'striped',
       headStyles: { fillColor: [40, 40, 40] }
+    });
+
+    currentY = doc.lastAutoTable.finalY + 15;
+    
+    if (currentY > 230) {
+      doc.addPage();
+      currentY = 20;
+    }
+
+    // Admission Fees Table
+    doc.setFontSize(12);
+    doc.text('New Admissions (For this month)', 14, currentY);
+    
+    const admissionPayments = report.validPayments.filter(p => p.payment_type === 'ADMISSION');
+    const admissionData = admissionPayments.map(p => [
+      p.member_name,
+      p.date,
+      `Rs. ${p.amount}`,
+      p.mode
+    ]);
+
+    autoTable(doc, {
+      startY: currentY + 5,
+      head: [['Member Name', 'Payment Date', 'Amount', 'Mode']],
+      body: admissionData.length > 0 ? admissionData : [['No data', '', '', '']],
+      theme: 'striped',
+      headStyles: { fillColor: [80, 40, 80] }
     });
 
     currentY = doc.lastAutoTable.finalY + 15;
