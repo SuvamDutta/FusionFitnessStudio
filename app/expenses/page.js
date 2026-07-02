@@ -1,8 +1,9 @@
-import { getExpenses } from '@/lib/actions';
+import { getExpenses, getGlobalMonth } from '@/lib/actions';
 import AddExpenseForm from '@/app/components/AddExpenseForm';
 
 export default async function ExpensesPage() {
-  const expenses = await getExpenses(); // all expenses
+  const { monthPrefix } = await getGlobalMonth();
+  const expenses = await getExpenses(monthPrefix);
 
   return (
     <div>
@@ -13,7 +14,7 @@ export default async function ExpensesPage() {
       <div className="grid-2 mb-2">
         <div className="card">
           <h2 className="mb-1">Record New Expense</h2>
-          <AddExpenseForm />
+          <AddExpenseForm monthPrefix={monthPrefix} />
         </div>
 
         <div className="card">

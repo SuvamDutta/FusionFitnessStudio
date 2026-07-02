@@ -1,13 +1,10 @@
-import { getMonthlyReport } from '@/lib/actions';
+import { getMonthlyReport, getGlobalMonth } from '@/lib/actions';
 import { IndianRupee, TrendingUp, TrendingDown, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import DownloadReportButton from './components/DownloadReportButton';
 
-export default async function Dashboard({ searchParams }) {
-  // Default to current date
-  const now = new Date();
-  const year = parseInt(searchParams?.year) || now.getFullYear();
-  const month = parseInt(searchParams?.month) || now.getMonth() + 1;
+export default async function Dashboard() {
+  const { year, month } = await getGlobalMonth();
   
   const report = await getMonthlyReport(year, month);
   
@@ -29,23 +26,6 @@ export default async function Dashboard({ searchParams }) {
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', alignItems: 'center' }}>
           <DownloadReportButton report={report} monthName={currentMonthName} year={year} />
-          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-color)', margin: '0 0.5rem' }}></div>
-          <Link href={`/?year=${year - 1}&month=${month}`} className="btn" style={{ padding: '0.5rem', backgroundColor: 'transparent' }}>&larr; {year - 1}</Link>
-          {months.map((m, i) => (
-            <Link 
-              key={m} 
-              href={`/?year=${year}&month=${i + 1}`} 
-              className="btn" 
-              style={{ 
-                backgroundColor: i + 1 === month ? 'var(--accent-color)' : 'rgba(255,255,255,0.1)',
-                color: i + 1 === month ? '#000' : 'var(--text-main)',
-                padding: '0.5rem 1rem'
-              }}
-            >
-              {m.substring(0, 3)}
-            </Link>
-          ))}
-          <Link href={`/?year=${year + 1}&month=${month}`} className="btn" style={{ padding: '0.5rem', backgroundColor: 'transparent' }}>{year + 1} &rarr;</Link>
         </div>
       </div>
 
@@ -108,7 +88,7 @@ export default async function Dashboard({ searchParams }) {
                     <td>{vp.date}</td>
                     <td>₹{vp.amount}</td>
                     <td>{vp.months_covered} Month(s)</td>
-                    <td style={{ color: 'var(--success)' }}>+₹{vp.apportionedAmount.toFixed(2)}</td>
+                    <td style={{ color: 'var(--success)' }}>+₹{vp.amount.toFixed(2)}</td>
                     <td>{vp.mode}</td>
                   </tr>
                 ))}

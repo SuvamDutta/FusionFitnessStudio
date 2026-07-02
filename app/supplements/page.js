@@ -1,11 +1,12 @@
-import { getSupplements, getInventory } from '@/lib/actions';
+import { getSupplements, getInventory, getGlobalMonth } from '@/lib/actions';
 import AddSupplementForm from '@/app/components/AddSupplementForm';
 import InventoryManagement from '@/app/components/InventoryManagement';
 import DeleteSaleButton from '@/app/components/DeleteSaleButton';
 import DeleteInventoryButton from '@/app/components/DeleteInventoryButton';
 
 export default async function SupplementsPage() {
-  const supplements = await getSupplements();
+  const { monthPrefix } = await getGlobalMonth();
+  const supplements = await getSupplements(monthPrefix);
   const inventory = await getInventory();
 
   return (
@@ -59,7 +60,7 @@ export default async function SupplementsPage() {
       <div className="grid-2 mb-2">
         <div className="card">
           <h2 className="mb-1">Record Sale</h2>
-          <AddSupplementForm inventory={inventory} />
+          <AddSupplementForm inventory={inventory} monthPrefix={monthPrefix} />
         </div>
 
         <div className="card">

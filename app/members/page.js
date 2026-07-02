@@ -1,11 +1,12 @@
-import { getMembers, getPayments } from '@/lib/actions';
+import { getMembers, getPayments, getGlobalMonth } from '@/lib/actions';
 import AddMemberForm from '@/app/components/AddMemberForm';
 import AddPaymentForm from '@/app/components/AddPaymentForm';
 import DeletePaymentButton from '@/app/components/DeletePaymentButton';
 
 export default async function MembersPage() {
+  const { monthPrefix } = await getGlobalMonth();
   const members = await getMembers();
-  const payments = await getPayments();
+  const payments = await getPayments(monthPrefix);
 
   return (
     <div>
@@ -21,7 +22,7 @@ export default async function MembersPage() {
         
         <div className="card">
           <h2 className="mb-1">Record Payment</h2>
-          <AddPaymentForm members={members} />
+          <AddPaymentForm members={members} monthPrefix={monthPrefix} />
         </div>
       </div>
 

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { LayoutDashboard, Users, CreditCard, ShoppingBag, Settings } from 'lucide-react';
 import { cookies } from 'next/headers';
 import LogoutButton from './components/LogoutButton';
+import MonthSelector from './components/MonthSelector';
+import { getGlobalMonth } from '@/lib/actions';
 
 export const metadata = {
   title: 'Fusion Gym Management',
@@ -12,6 +14,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const cookieStore = await cookies();
   const isLoggedIn = cookieStore.has('auth-token');
+  const globalMonth = await getGlobalMonth();
 
   return (
     <html lang="en">
@@ -20,6 +23,9 @@ export default async function RootLayout({ children }) {
           {isLoggedIn && (
             <aside className="sidebar">
               <div className="sidebar-logo">FUSION GYM</div>
+              <div style={{ marginBottom: '1.5rem', marginTop: '-0.5rem' }}>
+                <MonthSelector initialYear={globalMonth.year} initialMonth={globalMonth.month} />
+              </div>
               <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
                 <Link href="/" className="nav-link">
                   <LayoutDashboard size={20} />

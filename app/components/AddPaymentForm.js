@@ -2,10 +2,14 @@
 import { useState } from 'react';
 import { addPayment } from '@/lib/actions';
 
-export default function AddPaymentForm({ members }) {
+export default function AddPaymentForm({ members, monthPrefix }) {
+  const today = new Date();
+  const currentMonthPrefix = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+  const defaultDate = (monthPrefix && monthPrefix !== currentMonthPrefix) ? `${monthPrefix}-01` : today.toISOString().split('T')[0];
+
   const [memberId, setMemberId] = useState('');
   const [amount, setAmount] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(defaultDate);
   const [monthsCovered, setMonthsCovered] = useState(1);
   const [mode, setMode] = useState('CASH');
 

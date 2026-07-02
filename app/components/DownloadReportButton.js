@@ -47,7 +47,7 @@ export default function DownloadReportButton({ report, monthName, year }) {
 
     // Active Members Table
     doc.setFontSize(12);
-    doc.text('Active Member Payments (Apportioned for this month)', 14, currentY);
+    doc.text('Active Member Payments (For this month)', 14, currentY);
     
     const membersData = report.validPayments.map(p => [
       p.member_name,
@@ -55,7 +55,7 @@ export default function DownloadReportButton({ report, monthName, year }) {
       `Rs. ${p.amount}`,
       `${p.months_covered} Months`,
       p.mode,
-      `Rs. ${p.apportionedAmount.toFixed(2)}`
+      `Rs. ${p.amount.toFixed(2)}`
     ]);
 
     autoTable(doc, {

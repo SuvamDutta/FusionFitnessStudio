@@ -2,12 +2,16 @@
 import { useState } from 'react';
 import { addSupplement } from '@/lib/actions';
 
-export default function AddSupplementForm({ inventory }) {
+export default function AddSupplementForm({ inventory, monthPrefix }) {
+  const today = new Date();
+  const currentMonthPrefix = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+  const defaultDate = (monthPrefix && monthPrefix !== currentMonthPrefix) ? `${monthPrefix}-01` : today.toISOString().split('T')[0];
+
   const [buyerName, setBuyerName] = useState('');
   const [inventoryId, setInventoryId] = useState('');
   const [quantitySold, setQuantitySold] = useState('1');
   const [price, setPrice] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(defaultDate);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
