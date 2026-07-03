@@ -51,15 +51,16 @@ export default function AddPaymentForm({ members, monthPrefix }) {
         </div>
         <div className="form-group">
           <label className="form-label">Months Covered</label>
-          <input 
-            type="number" 
-            min="1"
+          <select 
             className="form-control" 
             value={monthsCovered} 
             onChange={(e) => setMonthsCovered(e.target.value)} 
             required 
-            disabled={paymentType === 'ADMISSION'}
-          />
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(num => (
+              <option key={num} value={num}>{num}</option>
+            ))}
+          </select>
         </div>
       </div>
       <div className="grid-2">
