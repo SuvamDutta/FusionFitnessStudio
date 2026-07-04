@@ -1,5 +1,5 @@
 import { getMonthlyReport, getGlobalMonth } from '@/lib/actions';
-import { IndianRupee, TrendingUp, TrendingDown, ShoppingBag } from 'lucide-react';
+import { IndianRupee, TrendingUp, TrendingDown, ShoppingBag, PiggyBank } from 'lucide-react';
 import Link from 'next/link';
 import DownloadReportButton from './components/DownloadReportButton';
 
@@ -29,7 +29,7 @@ export default async function Dashboard() {
         </div>
       </div>
 
-      <div className="grid-4 mb-2">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }} className="mb-2">
         <div className="card">
           <div className="card-title">Total Income (Fees)</div>
           <div className="card-value" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -55,10 +55,19 @@ export default async function Dashboard() {
           </div>
         </div>
 
+        <div className="card">
+          <div className="card-title">Piggy Bank Savings</div>
+          <div className="card-value positive" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <PiggyBank size={24} />
+            {report.totalPiggyBankSaved.toFixed(2)}
+          </div>
+          <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>Manual savings deducted from Profit</p>
+        </div>
+
         <div className="card" style={{ borderColor: report.profit >= 0 ? 'var(--success)' : 'var(--danger)' }}>
           <div className="card-title">Net Profit</div>
           <div className={`card-value ${report.profit >= 0 ? 'positive' : 'negative'}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <TrendingUp size={24} />
+            {report.profit >= 0 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
             {report.profit.toFixed(2)}
           </div>
         </div>

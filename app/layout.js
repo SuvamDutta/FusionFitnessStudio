@@ -1,6 +1,6 @@
 import './globals.css';
 import Link from 'next/link';
-import { LayoutDashboard, Users, CreditCard, ShoppingBag, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, ShoppingBag, Settings, PiggyBank, TrendingUp } from 'lucide-react';
 import { cookies } from 'next/headers';
 import LogoutButton from './components/LogoutButton';
 import MonthSelector from './components/MonthSelector';
@@ -42,6 +42,14 @@ export default async function RootLayout({ children }) {
                 <Link href="/supplements" className="nav-link">
                   <ShoppingBag size={20} />
                   Supplements
+                </Link>
+                <Link href="/piggybank" className="nav-link">
+                  <PiggyBank size={20} />
+                  Piggy Bank
+                </Link>
+                <Link href="/investments" className="nav-link">
+                  <TrendingUp size={20} />
+                  Investments
                 </Link>
               </nav>
               <LogoutButton />
