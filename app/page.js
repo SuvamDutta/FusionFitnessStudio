@@ -25,7 +25,7 @@ export default async function Dashboard() {
           <p className="text-muted">Overview for {currentMonthName} {year}</p>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', alignItems: 'center' }}>
-          <DownloadReportButton report={report} monthName={currentMonthName} year={year} />
+          <DownloadReportButton report={JSON.parse(JSON.stringify(report))} monthName={currentMonthName} year={year} />
         </div>
       </div>
 

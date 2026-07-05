@@ -16,12 +16,13 @@ async function getBtcPrice() {
 
 export default async function InvestmentsPage() {
   const { monthPrefix } = await getGlobalMonth();
-  const investments = await getInvestments(monthPrefix);
+  const allInvestments = await getInvestments();
+  const monthInvestments = await getInvestments(monthPrefix);
   
   const currentBtcPrice = await getBtcPrice();
   
-  const totalBtc = investments.reduce((sum, inv) => sum + inv.quantity, 0);
-  const totalUsdtInvested = investments.reduce((sum, inv) => sum + inv.usdt_invested, 0);
+  const totalBtc = allInvestments.reduce((sum, inv) => sum + inv.quantity, 0);
+  const totalUsdtInvested = allInvestments.reduce((sum, inv) => sum + inv.usdt_invested, 0);
   
   const totalCurrentValue = currentBtcPrice ? (totalBtc * currentBtcPrice) : 0;
   const profitLoss = totalCurrentValue - totalUsdtInvested;
@@ -94,7 +95,7 @@ export default async function InvestmentsPage() {
               </tr>
             </thead>
             <tbody>
-              {investments.map(inv => (
+              {allInvestments.map(inv => (
                 <tr key={inv.id}>
                   <td>{inv.date}</td>
                   <td>{inv.asset}</td>
@@ -106,9 +107,9 @@ export default async function InvestmentsPage() {
                   </td>
                 </tr>
               ))}
-              {investments.length === 0 && (
+              {allInvestments.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="text-center text-muted">No investments logged this month.</td>
+                  <td colSpan="6" className="text-center text-muted">No investments logged yet.</td>
                 </tr>
               )}
             </tbody>
