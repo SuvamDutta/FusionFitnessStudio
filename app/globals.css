@@ -248,6 +248,11 @@ tr:hover td {
   transition: all 0.3s ease;
 }
 
+.form-control option {
+  background-color: var(--bg-panel);
+  color: var(--text-main);
+}
+
 .form-control:focus {
   outline: none;
   border-color: var(--accent-color);

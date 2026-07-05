@@ -6,7 +6,8 @@ import DeleteMemberButton from '@/app/components/DeleteMemberButton';
 
 export default async function MembersPage() {
   const { monthPrefix } = await getGlobalMonth();
-  const members = await getMembers(monthPrefix);
+  const rawMembers = await getMembers(monthPrefix);
+  const members = JSON.parse(JSON.stringify(rawMembers));
   const payments = await getPayments(monthPrefix);
 
   return (
