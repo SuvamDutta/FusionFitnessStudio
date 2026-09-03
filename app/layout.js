@@ -51,6 +51,10 @@ export default async function RootLayout({ children }) {
                   <TrendingUp size={20} />
                   Investments
                 </Link>
+                <Link href="/lockers" className="nav-link">
+                  <Settings size={20} />
+                  Locker Room
+                </Link>
               </nav>
               <LogoutButton />
             </aside>

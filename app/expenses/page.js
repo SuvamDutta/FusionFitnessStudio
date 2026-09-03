@@ -1,5 +1,6 @@
 import { getExpenses, getGlobalMonth } from '@/lib/actions';
 import AddExpenseForm from '@/app/components/AddExpenseForm';
+import DeleteExpenseButton from '@/app/components/DeleteExpenseButton';
 
 export default async function ExpensesPage() {
   const { monthPrefix } = await getGlobalMonth();
@@ -36,6 +37,7 @@ export default async function ExpensesPage() {
                 <th>Category</th>
                 <th>Description</th>
                 <th>Amount</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -45,11 +47,12 @@ export default async function ExpensesPage() {
                   <td>{e.category}</td>
                   <td>{e.description || '-'}</td>
                   <td>₹{e.amount}</td>
+                  <td><DeleteExpenseButton id={e.id} /></td>
                 </tr>
               ))}
               {expenses.length === 0 && (
                 <tr>
-                  <td colSpan="4" className="text-center text-muted">No expenses recorded.</td>
+                  <td colSpan="5" className="text-center text-muted">No expenses recorded.</td>
                 </tr>
               )}
             </tbody>
